@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 our $DATE = '2014-07-16'; # DATE
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
 
 our @ISA;
 
@@ -32,7 +32,7 @@ Perinci::CmdLine::Any - Use Perinci::CmdLine, fallback on Perinci::CmdLine::Lite
 
 =head1 VERSION
 
-This document describes version 0.01 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-16.
+This document describes version 0.02 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-16.
 
 =head1 SYNOPSIS
 
@@ -44,13 +44,13 @@ This document describes version 0.01 of Perinci::CmdLine::Any (from Perl distrib
 
 =head1 DESCRIPTION
 
-Not unlike L<Any::Moose>, this module lets you use L<Perinci::CmdLine> if it's
-available, or L<Perinci::CmdLine::Lite> as the fallback. The goal is to reduce
-dependencies (Perinci::CmdLine::Any only depends on the lightweight
-Perinci::CmdLine::Lite) but use the richer Perinci::CmdLine if it's available.
+This module lets you use L<Perinci::CmdLine> if it's available, or
+L<Perinci::CmdLine::Lite> as the fallback. The goal is to reduce dependencies
+(Perinci::CmdLine::Any only depends on the lightweight Perinci::CmdLine::Lite)
+but use the richer Perinci::CmdLine if it's available.
 
-Note that Perinci::CmdLine::Lite is not 100% API-compatible with
-Perinci::CmdLine.
+Note that Perinci::CmdLine::Lite provides only a subset of the
+functionalities/features of Perinci::CmdLine.
 
 =head1 SEE ALSO
 
