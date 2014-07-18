@@ -1,7 +1,7 @@
 package Perinci::CmdLine::Any;
 
 our $DATE = '2014-07-18'; # DATE
-our $VERSION = '0.03'; # VERSION
+our $VERSION = '0.04'; # VERSION
 
 use 5.010001;
 use strict;
@@ -9,12 +9,28 @@ use warnings;
 
 sub new {
     my $class = shift;
-    eval { require Perinci::CmdLine; Perinci::CmdLine->VERSION(1.17) };
-    if ($@) {
-        require Perinci::CmdLine::Lite;
-        Perinci::CmdLine::Lite->new(@_);
+
+    my $pericmd_ver = 1.17;
+
+    if ($ENV{PERINCI_CMDLINE_ANY}) {
+        my $mod = $ENV{PERINCI_CMDLINE_ANY};
+        my $modpm = $mod; $modpm =~ s!::!/!g; $modpm .= ".pm";
+        require $modpm;
+        if ($mod eq 'Perinci::CmdLine') {
+            Perinci::CmdLine->VERSION($pericmd_ver);
+        }
+        $mod->new(@_);
     } else {
-        Perinci::CmdLine->new(@_);
+        eval {
+            require Perinci::CmdLine;
+            Perinci::CmdLine->VERSION($pericmd_ver);
+        };
+        if ($@) {
+            require Perinci::CmdLine::Lite;
+            Perinci::CmdLine::Lite->new(@_);
+        } else {
+            Perinci::CmdLine->new(@_);
+        }
     }
 }
 
@@ -33,7 +49,7 @@ Perinci::CmdLine::Any - Use Perinci::CmdLine, fallback on Perinci::CmdLine::Lite
 
 =head1 VERSION
 
-This document describes version 0.03 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-18.
+This document describes version 0.04 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-18.
 
 =head1 SYNOPSIS
 
@@ -53,7 +69,17 @@ but use the richer Perinci::CmdLine if it's available.
 Note that Perinci::CmdLine::Lite provides only a subset of the
 functionalities/features of Perinci::CmdLine.
 
+If you want to force using a specific class, you can set the
+C<PERINCI_CMDLINE_ANY> environment variable, e.g. the command below will choose
+Perinci::CmdLine::Lite even though Perinci::CmdLine is available:
+
+ % PERINCI_CMDLINE_ANY=Perinci::CmdLine::Lite yourapp.pl
+
 =for Pod::Coverage ^(new)$
+
+=head1 ENVIRONMENT
+
+=head2 PERINCI_CMDLINE_ANY => str
 
 =head1 SEE ALSO
 
