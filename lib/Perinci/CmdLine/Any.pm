@@ -1,20 +1,21 @@
 package Perinci::CmdLine::Any;
 
+our $DATE = '2014-07-18'; # DATE
+our $VERSION = '0.03'; # VERSION
+
 use 5.010001;
 use strict;
 use warnings;
 
-our $DATE = '2014-07-16'; # DATE
-our $VERSION = '0.02'; # VERSION
-
-our @ISA;
-
-eval { require Perinci::CmdLine; Perinci::CmdLine->VERSION(1.17) };
-if ($@) {
-    require Perinci::CmdLine::Lite;
-    @ISA = qw(Perinci::CmdLine::Lite);
-} else {
-    @ISA = qw(Perinci::CmdLine);
+sub new {
+    my $class = shift;
+    eval { require Perinci::CmdLine; Perinci::CmdLine->VERSION(1.17) };
+    if ($@) {
+        require Perinci::CmdLine::Lite;
+        Perinci::CmdLine::Lite->new(@_);
+    } else {
+        Perinci::CmdLine->new(@_);
+    }
 }
 
 1;
@@ -32,7 +33,7 @@ Perinci::CmdLine::Any - Use Perinci::CmdLine, fallback on Perinci::CmdLine::Lite
 
 =head1 VERSION
 
-This document describes version 0.02 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-16.
+This document describes version 0.03 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-18.
 
 =head1 SYNOPSIS
 
@@ -51,6 +52,8 @@ but use the richer Perinci::CmdLine if it's available.
 
 Note that Perinci::CmdLine::Lite provides only a subset of the
 functionalities/features of Perinci::CmdLine.
+
+=for Pod::Coverage ^(new)$
 
 =head1 SEE ALSO
 
