@@ -1,7 +1,7 @@
 package Perinci::CmdLine::Any;
 
-our $DATE = '2014-07-18'; # DATE
-our $VERSION = '0.04'; # VERSION
+our $DATE = '2014-07-23'; # DATE
+our $VERSION = '0.05'; # VERSION
 
 use 5.010001;
 use strict;
@@ -49,7 +49,7 @@ Perinci::CmdLine::Any - Use Perinci::CmdLine, fallback on Perinci::CmdLine::Lite
 
 =head1 VERSION
 
-This document describes version 0.04 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-18.
+This document describes version 0.05 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2014-07-23.
 
 =head1 SYNOPSIS
 

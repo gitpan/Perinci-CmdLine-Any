@@ -3,8 +3,8 @@ NAME
     Perinci::CmdLine::Lite
 
 VERSION
-    This document describes version 0.04 of Perinci::CmdLine::Any (from Perl
-    distribution Perinci-CmdLine-Any), released on 2014-07-18.
+    This document describes version 0.05 of Perinci::CmdLine::Any (from Perl
+    distribution Perinci-CmdLine-Any), released on 2014-07-23.
 
 SYNOPSIS
      In your command-line script:
