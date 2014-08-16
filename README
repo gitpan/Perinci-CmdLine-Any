@@ -3,8 +3,8 @@ NAME
     Perinci::CmdLine::Lite
 
 VERSION
-    This document describes version 0.05 of Perinci::CmdLine::Any (from Perl
-    distribution Perinci-CmdLine-Any), released on 2014-07-23.
+    This document describes version 0.06 of Perinci::CmdLine::Any (from Perl
+    distribution Perinci-CmdLine-Any), released on 2014-08-16.
 
 SYNOPSIS
      In your command-line script:
@@ -16,9 +16,10 @@ SYNOPSIS
 DESCRIPTION
     This module lets you use Perinci::CmdLine if it's available, or
     Perinci::CmdLine::Lite as the fallback. The goal is to reduce
-    dependencies (Perinci::CmdLine::Any only depends on the lightweight
-    Perinci::CmdLine::Lite) but use the richer Perinci::CmdLine if it's
-    available.
+    dependencies. Perinci::CmdLine::Any only depends on the lightweight
+    Perinci::CmdLine::Lite, which has +- 20 non-core Perl modules as
+    dependency, while installing Perinci::CmdLine will pull +-200 non-core
+    modules.
 
     Note that Perinci::CmdLine::Lite provides only a subset of the
     functionalities/features of Perinci::CmdLine.
@@ -28,6 +29,11 @@ DESCRIPTION
     choose Perinci::CmdLine::Lite even though Perinci::CmdLine is available:
 
      % PERINCI_CMDLINE_ANY=Perinci::CmdLine::Lite yourapp.pl
+
+    If you want to prefer to Perinci::CmdLine::Lite (but user will still be
+    able to override using "PERINCI_CMDLINE_ANY"):
+
+     use Perinci::CmdLine::Any -prefer_lite => 1;
 
 ENVIRONMENT
   PERINCI_CMDLINE_ANY => str
