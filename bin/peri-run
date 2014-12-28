@@ -1,24 +1,66 @@
 #!perl
 
-our $DATE = '2014-08-16'; # DATE
-our $VERSION = '0.06'; # VERSION
+our $DATE = '2014-12-29'; # DATE
+our $VERSION = '0.07'; # VERSION
+# NO_PERINCI_CMDLINE_SCRIPT
 
 use 5.010;
 use strict;
 use warnings;
+use Log::Any '$log';
 
-use Getopt::Long;
-use Perinci::CmdLine::Any;
+use Getopt::Long::Complete qw(GetOptionsWithCompletion);
 
 my %opts = (
     library => [],
     subcommands => [],
     pass_cmdline_object => 0,
 );
-Getopt::Long::Configure('pass_through', 'no_permute');
-GetOptions(
+$Getopt::Long::Complete::opt_permute = 0;
+$Getopt::Long::Complete::opt_pass_through = 1;
+GetOptionsWithCompletion(
+    sub {
+        my %args = @_;
+        #$log->tracef('args=%s', \%args);
+        my $word = $args{word};
+        if ($args{type} eq 'arg' && $args{argpos} == 0) {
+            my $popts = $args{parsed_opts};
+
+            my @scnames;
+            if ($popts && ($popts->{'-s'} || $popts->{'--subcommand'})) {
+                # if user has specified -s (or --subcommand), then we complete
+                # subcommand name in first argument
+                for (
+                    @{ $popts->{'-s'} // [] },
+                    @{ $popts->{'--subcommand'} // [] },
+                ) {
+                    /.+\s(.+)/ and push @scnames, $1;
+                }
+                require Complete::Util;
+                return Complete::Util::complete_array_elem(
+                    word=>$word, array=>\@scnames);
+            } else {
+                # else, we complete Riap URL in the first argument
+                require Complete::Riap;
+                return Complete::Riap::complete_riap_url(
+                    word=>$word, type=>'function',
+                );
+            }
+        } elsif ($args{type} eq 'optval') {
+            my $opt = $args{opt};
+            if ($opt eq '--library' || $opt eq '-I') {
+                require Complete::Module;
+                return Complete::Module::complete_module(word=>$word);
+            }
+        }
+    },
     'library|I=s' => $opts{library},
     'help|h|?' => \$opts{help},
+    'version' => sub {
+        no warnings 'once';
+        say "peri-run version " . ($main::VERSION // 'dev');
+        exit 0;
+    },
     'subcommand|s=s' => $opts{subcommands},
     'pass-cmdline-object|o' => \$opts{pass_cmdline_object},
 );
@@ -58,11 +100,8 @@ subcommands.
 command (function) arguments.
 
 Examples:
-  List all subcommands (functions) in a module:
-    $me Foo::Bar -l
-
   Show usage for a subcommand (function):
-    $me Foo::Bar func1 --help
+    $me /Foo/Bar/func1 --help
     $me /Foo/Bar/func1 -h
 
   Execute a command and display the result as YAML:
@@ -84,6 +123,7 @@ USAGE
 
 for my $dir (@{ $opts{library} }) { require lib; lib->import($dir) }
 
+require Perinci::CmdLine::Any;
 my $cmd = Perinci::CmdLine::Any->new(
     pass_cmdline_object => $opts{pass_cmdline_object},
 );
@@ -163,8 +203,8 @@ if (@ARGV && !@$oscs) {
 
 $cmd->run;
 
-#ABSTRACT: Run commands (from any Riap function) on the command-line
-#PODNAME: peri-run
+# ABSTRACT: Run commands (from any Riap function) on the command-line
+# PODNAME: peri-run
 
 __END__
 
@@ -178,7 +218,7 @@ peri-run - Run commands (from any Riap function) on the command-line
 
 =head1 VERSION
 
-This document describes version 0.06 of peri-run (from Perl distribution Perinci-CmdLine-Any), released on 2014-08-16.
+This document describes version 0.07 of peri-run (from Perl distribution Perinci-CmdLine-Any), released on 2015-12-29.
 
 =head1 SYNOPSIS
 
@@ -198,13 +238,41 @@ Type C<peri-run --help> for more help.
 
 L<Perinci::CmdLine::Any>
 
+=head1 COMPLETION
+
+This script has shell tab completion capability with support for several shells.
+
+=head2 bash
+
+To activate bash completion for this script, put:
+
+ complete -C peri-run peri-run
+
+in your bash startup (e.g. C<~/.bashrc>). Your next shell session will then recognize tab completion for the command. Or, you can also directly execute the line above in your shell to activate immediately.
+
+It is recommended, however, that you install L<shcompgen> which allows you to activate completion scripts for several kinds of scripts on multiple shells. Some CPAN distributions (those that are built with L<Dist::Zilla::Plugin::GenShellCompletion>) will even automatically enable shell completion for their included scripts (using C<shcompgen>) at installation time, so you can immadiately have tab completion.
+
+=head2 tcsh
+
+To activate tcsh completion for this script, put:
+
+ complete peri-run 'p/*/`peri-run`/'
+
+in your tcsh startup (e.g. C<~/.tcshrc>). Your next shell session will then recognize tab completion for the command. Or, you can also directly execute the line above in your shell to activate immediately.
+
+It is also recommended to install C<shcompgen> (see above).
+
+=head2 other shells
+
+For fish and zsh, install C<shcompgen> as described above.
+
 =head1 HOMEPAGE
 
 Please visit the project's homepage at L<https://metacpan.org/release/Perinci-CmdLine-Any>.
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-Perinci-CmdLine-Any>.
+Source repository is at L<https://github.com/perlancar/perl-Perinci-CmdLine-Any>.
 
 =head1 BUGS
 
@@ -216,11 +284,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
