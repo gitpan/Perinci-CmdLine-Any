@@ -1,7 +1,7 @@
 #!perl
 
-our $DATE = '2014-12-29'; # DATE
-our $VERSION = '0.07'; # VERSION
+our $DATE = '2014-12-31'; # DATE
+our $VERSION = '0.08'; # VERSION
 # NO_PERINCI_CMDLINE_SCRIPT
 
 use 5.010;
@@ -218,7 +218,7 @@ peri-run - Run commands (from any Riap function) on the command-line
 
 =head1 VERSION
 
-This document describes version 0.07 of peri-run (from Perl distribution Perinci-CmdLine-Any), released on 2015-12-29.
+This document describes version 0.08 of peri-run (from Perl distribution Perinci-CmdLine-Any), released on 2015-12-31.
 
 =head1 SYNOPSIS
 

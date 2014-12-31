@@ -1,7 +1,7 @@
 package Perinci::CmdLine::Any;
 
-our $DATE = '2014-12-29'; # DATE
-our $VERSION = '0.07'; # VERSION
+our $DATE = '2014-12-31'; # DATE
+our $VERSION = '0.08'; # VERSION
 
 use 5.010001;
 use strict;
@@ -22,8 +22,14 @@ sub new {
     my $pericmd_ver = 1.04;
 
     my @mods;
-    if ($ENV{PERINCI_CMDLINE_ANY}) {
-        @mods = ($ENV{PERINCI_CMDLINE_ANY});
+    my $env = $ENV{PERINCI_CMDLINE_ANY};
+    if ($env) {
+        if ($env eq 'classic') {
+            $env = 'Perinci::CmdLine';
+        } elsif ($env eq 'lite') {
+            $env = 'Perinci::CmdLine::Lite';
+        }
+        @mods = ($env);
     } elsif ($Opts{-prefer_lite}) {
         @mods = qw(Perinci::CmdLine::Lite Perinci::CmdLine);
     } else {
@@ -72,7 +78,7 @@ Perinci::CmdLine::Any - Use Perinci::CmdLine, fallback on Perinci::CmdLine::Lite
 
 =head1 VERSION
 
-This document describes version 0.07 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2015-12-29.
+This document describes version 0.08 of Perinci::CmdLine::Any (from Perl distribution Perinci-CmdLine-Any), released on 2015-12-31.
 
 =head1 SYNOPSIS
 
@@ -109,6 +115,8 @@ override using C<PERINCI_CMDLINE_ANY>):
 =head1 ENVIRONMENT
 
 =head2 PERINCI_CMDLINE_ANY => str
+
+Either specify module name, or C<lite> or C<classic>.
 
 =head1 SEE ALSO
 

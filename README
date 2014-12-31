@@ -1,19 +1,13 @@
-NAME
-    Perinci::CmdLine::Any - Use Perinci::CmdLine, fallback on
-    Perinci::CmdLine::Lite
-
-VERSION
-    This document describes version 0.07 of Perinci::CmdLine::Any (from Perl
-    distribution Perinci-CmdLine-Any), released on 2015-12-29.
-
 SYNOPSIS
-     In your command-line script:
 
+     In your command-line script:
+    
      #!perl
      use Perinci::CmdLine::Any;
      Perinci::CmdLine::Any->new(url => '/Package/func')->run;
 
 DESCRIPTION
+
     This module lets you use Perinci::CmdLine if it's available, or
     Perinci::CmdLine::Lite as the fallback. The goal is to reduce
     dependencies. Perinci::CmdLine::Any only depends on the lightweight
@@ -25,44 +19,26 @@ DESCRIPTION
     functionalities/features of Perinci::CmdLine.
 
     If you want to force using a specific class, you can set the
-    "PERINCI_CMDLINE_ANY" environment variable, e.g. the command below will
-    choose Perinci::CmdLine::Lite even though Perinci::CmdLine is available:
+    PERINCI_CMDLINE_ANY environment variable, e.g. the command below will
+    choose Perinci::CmdLine::Lite even though Perinci::CmdLine is
+    available:
 
      % PERINCI_CMDLINE_ANY=Perinci::CmdLine::Lite yourapp.pl
 
     If you want to prefer to Perinci::CmdLine::Lite (but user will still be
-    able to override using "PERINCI_CMDLINE_ANY"):
+    able to override using PERINCI_CMDLINE_ANY):
 
      use Perinci::CmdLine::Any -prefer_lite => 1;
 
 ENVIRONMENT
-  PERINCI_CMDLINE_ANY => str
+
+ PERINCI_CMDLINE_ANY => str
+
+    Either specify module name, or lite or classic.
+
 SEE ALSO
+
     Perinci::CmdLine
 
     Perinci::CmdLine::Lite
-
-HOMEPAGE
-    Please visit the project's homepage at
-    <https://metacpan.org/release/Perinci-CmdLine-Any>.
-
-SOURCE
-    Source repository is at
-    <https://github.com/perlancar/perl-Perinci-CmdLine-Any>.
-
-BUGS
-    Please report any bugs or feature requests on the bugtracker website
-    <https://rt.cpan.org/Public/Dist/Display.html?Name=Perinci-CmdLine-Any>
-
-    When submitting a bug or request, please include a test-file or a patch
-    to an existing test-file that illustrates the bug or desired feature.
-
-AUTHOR
-    perlancar <perlancar@cpan.org>
-
-COPYRIGHT AND LICENSE
-    This software is copyright (c) 2014 by perlancar@cpan.org.
-
-    This is free software; you can redistribute it and/or modify it under
-    the same terms as the Perl 5 programming language system itself.
 
